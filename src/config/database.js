@@ -8,15 +8,15 @@ const config = {
   },
   development: {
     extend: 'default',
-    database: 'iic2513template_dev',
+    database: 'wican_dev',
   },
   test: {
     extend: 'default',
-    database: 'iic2513template_test',
+    database: 'wican_test',
   },
   production: {
     extend: 'default',
-    database: 'iic2513template_production',
+    database: 'wican_production',
   },
 };
 
