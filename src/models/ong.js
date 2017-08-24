@@ -7,7 +7,7 @@ module.exports = function defineOng(sequelize, DataTypes) {
     webpage: DataTypes.STRING,
   });
   Ong.associate = function associate(models) {
-    // associations can be defined here
+    Ong.hasMany(models.initiative);
   };
   return Ong;
 };
