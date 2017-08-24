@@ -2,6 +2,6 @@
 
 <ul>
   <% ongs.forEach((ong) => { %>
-    <li><%= ong.name %></li>
+    <li><a href="<%= ongPath(ong) %>"><%= ong.name %></a></li>
   <% }) %>
 </ul>
