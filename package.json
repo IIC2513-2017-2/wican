@@ -17,7 +17,6 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
-    "faker": "^4.1.0",
     "koa": "^2.3.0",
     "koa-body": "^2.3.0",
     "koa-ejs": "^4.1.0",
