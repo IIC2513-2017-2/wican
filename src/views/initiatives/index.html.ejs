@@ -2,6 +2,6 @@
 
 <ul>
   <% initiatives.forEach((initiative) => { %>
-    <li><%= initiative.title %></li>
+    <li><a href="<%= buildInitiativePath(initiative) %>"><%= initiative.title %></a></li>
   <% }) %>
 </ul>
