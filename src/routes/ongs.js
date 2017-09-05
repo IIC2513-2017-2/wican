@@ -21,6 +21,13 @@ router.get('ong', '/:id', async (ctx) => {
   });
 });
 
-router.use('/:ongId/initiatives', initiativesRouter.routes());
+router.use(
+  '/:ongId/initiatives',
+  async (ctx, next) => {
+    ctx.state.ong = await ctx.orm.ong.findById(ctx.params.ongId);
+    await next();
+  },
+  initiativesRouter.routes(),
+);
 
 module.exports = router;

@@ -3,7 +3,7 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 router.get('ongInitiatives', '/', async (ctx) => {
-  const ong = await ctx.orm.ong.findById(ctx.params.ongId);
+  const { ong } = ctx.state;
   const initiatives = await ong.getInitiatives();
   await ctx.render('initiatives/index', {
     initiatives,
@@ -14,7 +14,7 @@ router.get('ongInitiatives', '/', async (ctx) => {
 });
 
 router.get('ongInitiativesNew', '/new', async (ctx) => {
-  const ong = await ctx.orm.ong.findById(ctx.params.ongId);
+  const { ong } = ctx.state;
   const initiative = ctx.orm.initiative.build();
   await ctx.render('initiatives/new', {
     ong,
@@ -24,7 +24,7 @@ router.get('ongInitiativesNew', '/new', async (ctx) => {
 });
 
 router.post('ongInitiativesCreate', '/', async (ctx) => {
-  const ong = await ctx.orm.ong.findById(ctx.params.ongId);
+  const { ong } = ctx.state;
   try {
     const initiative = await ong.createInitiative(ctx.request.body);
     ctx.redirect(ctx.router.url('ongInitiative', { ongId: initiative.ongId, id: initiative.id }));
@@ -39,7 +39,7 @@ router.post('ongInitiativesCreate', '/', async (ctx) => {
 });
 
 router.get('ongInitiative', '/:id', async (ctx) => {
-  const ong = await ctx.orm.ong.findById(ctx.params.ongId);
+  const { ong } = ctx.state;
   const initiatives = await ong.getInitiatives({
     where: { id: ctx.params.id },
     limit: 1,
