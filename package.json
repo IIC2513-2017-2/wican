@@ -1,8 +1,8 @@
 {
-  "name": "template",
-  "version": "1.0.0",
+  "name": "wican",
+  "version": "0.1.0",
   "main": "index.js",
-  "repository": "https://github.com/IIC2513-2017-2/template.git",
+  "repository": "https://github.com/IIC2513-2017-2/wican.git",
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
@@ -17,6 +17,7 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
+    "faker": "^4.1.0",
     "koa": "^2.3.0",
     "koa-body": "^2.3.0",
     "koa-ejs": "^4.1.0",
