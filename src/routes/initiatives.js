@@ -23,6 +23,16 @@ router.get('ongInitiativesNew', '/new', async (ctx) => {
   });
 });
 
+router.get('ongInitiativesEdit', '/:id/edit', async (ctx) => {
+  const { ong } = ctx.state;
+  const initiative = await ctx.orm.initiative.findById(ctx.params.id);
+  await ctx.render('initiatives/edit', {
+    ong,
+    initiative,
+    updateInitiativePath: ctx.router.url('ongInitiativesUpdate', ong.id, initiative.id),
+  });
+});
+
 router.post('ongInitiativesCreate', '/', async (ctx) => {
   const { ong } = ctx.state;
   try {
@@ -34,6 +44,22 @@ router.post('ongInitiativesCreate', '/', async (ctx) => {
       initiative: ctx.orm.initiative.build(ctx.request.body),
       errors: validationError.errors,
       createInitiativePath: ctx.router.url('ongInitiativesCreate', ong.id),
+    });
+  }
+});
+
+router.patch('ongInitiativesUpdate', '/:id', async (ctx) => {
+  const { ong } = ctx.state;
+  const initiative = await ctx.orm.initiative.findById(ctx.params.id);
+  try {
+    await initiative.update(ctx.request.body);
+    ctx.redirect(ctx.router.url('ongInitiative', { ongId: initiative.ongId, id: initiative.id }));
+  } catch (validationError) {
+    await ctx.render('initiatives/edit', {
+      ong,
+      initiative,
+      errors: validationError.errors,
+      updateInitiativePath: ctx.router.url('ongInitiativesUpdate', ong.id, initiative.id),
     });
   }
 });

@@ -47,7 +47,7 @@ app.use(koaBody({
 
 app.use((ctx, next) => {
   ctx.request.method = override.call(ctx, ctx.request.body);
-  return next();?
+  return next();
 });
 
 // Configure EJS views
