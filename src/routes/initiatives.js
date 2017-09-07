@@ -19,7 +19,7 @@ router.get('ongInitiativesNew', '/new', async (ctx) => {
   await ctx.render('initiatives/new', {
     ong,
     initiative,
-    createInitiativePath: ctx.router.url('ongInitiativesCreate', ong.id),
+    submitInitiativePath: ctx.router.url('ongInitiativesCreate', ong.id),
   });
 });
 
@@ -29,7 +29,7 @@ router.get('ongInitiativesEdit', '/:id/edit', async (ctx) => {
   await ctx.render('initiatives/edit', {
     ong,
     initiative,
-    updateInitiativePath: ctx.router.url('ongInitiativesUpdate', ong.id, initiative.id),
+    submitInitiativePath: ctx.router.url('ongInitiativesUpdate', ong.id, initiative.id),
   });
 });
 
@@ -43,7 +43,7 @@ router.post('ongInitiativesCreate', '/', async (ctx) => {
       ong,
       initiative: ctx.orm.initiative.build(ctx.request.body),
       errors: validationError.errors,
-      createInitiativePath: ctx.router.url('ongInitiativesCreate', ong.id),
+      submitInitiativePath: ctx.router.url('ongInitiativesCreate', ong.id),
     });
   }
 });
@@ -59,7 +59,7 @@ router.patch('ongInitiativesUpdate', '/:id', async (ctx) => {
       ong,
       initiative,
       errors: validationError.errors,
-      updateInitiativePath: ctx.router.url('ongInitiativesUpdate', ong.id, initiative.id),
+      submitInitiativePath: ctx.router.url('ongInitiativesUpdate', ong.id, initiative.id),
     });
   }
 });
