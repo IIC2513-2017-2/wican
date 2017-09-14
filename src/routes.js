@@ -8,9 +8,13 @@ const session = require('./routes/session');
 
 const router = new KoaRouter();
 
-// layout - available to all routes
-router.use((ctx, next) => {
-  ctx.state.ongsPath = ctx.router.url('ongs');
+router.use(async (ctx, next) => {
+  Object.assign(ctx.state, {
+    currentUser: ctx.session.userId && await ctx.orm.user.findById(ctx.session.userId),
+    newSessionPath: ctx.router.url('sessionNew'),
+    destroySessionPath: ctx.router.url('sessionDestroy'),
+    ongsPath: ctx.router.url('ongs'),
+  });
   return next();
 });
 
