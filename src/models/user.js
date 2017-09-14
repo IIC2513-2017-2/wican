@@ -1,3 +1,12 @@
+const bcrypt = require('bcrypt');
+
+async function buildPasswordHash(instance) {
+  if (instance.changed('password')) {
+    const hash = await bcrypt.hash(instance.password, 10);
+    instance.set('password', hash);
+  }
+}
+
 module.exports = function defineuser(sequelize, DataTypes) {
   const user = sequelize.define('user', {
     firstName: {
@@ -32,5 +41,12 @@ module.exports = function defineuser(sequelize, DataTypes) {
       },
     },
   });
+  user.beforeUpdate(buildPasswordHash);
+  user.beforeCreate(buildPasswordHash);
+
+  user.prototype.checkPassword = function checkPassword(password) {
+    return bcrypt.compare(password, this.password);
+  };
+
   return user;
 };
