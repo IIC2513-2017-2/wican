@@ -7,7 +7,7 @@ const basename = path.basename(module.filename);
 
 const db = {};
 
-const sequelizeConfig = (config.url) ? process.env[config.url] : config;
+const sequelizeConfig = (config.use_env_variable) ? process.env[config.use_env_variable] : config;
 const sequelize = new Sequelize(sequelizeConfig);
 
 fs
