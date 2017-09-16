@@ -16,7 +16,7 @@ const config = {
   },
   production: {
     extend: 'default',
-    database: 'wican_production',
+    use_env_variable: 'DATABASE_URL',
   },
 };
 
