@@ -1,7 +1,14 @@
 <h1>ONGs en wican</h1>
 
-<ul>
+Explora las diferentes ONGs que están usando <strong>wican</strong>:
+
+<ul id="ongs-list">
   <% ongs.forEach((ong) => { %>
-    <li><a href="<%= ongPath(ong) %>"><%= ong.name %></a></li>
+    <li>
+      <a href="<%= ongPath(ong) %>">
+        <img src="<%= ong.logo %>" alt="Logo de ONG"/>
+        <span><%= ong.name %></span>
+      </a>
+    </li>
   <% }) %>
 </ul>

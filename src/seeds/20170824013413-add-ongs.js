@@ -6,7 +6,7 @@ module.exports = {
     for (let i = 0; i < 10; i += 1) {
       ongsData.push({
         name: faker.company.companyName(),
-        logo: faker.image.business(),
+        logo: faker.image.abstract(500, 500, true),
         email: faker.internet.email(),
         description: faker.lorem.sentences(5),
         webpage: faker.internet.url(),

@@ -1,0 +1,42 @@
+#ongs-list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  li {
+    transition: 0.3s all;
+    margin: 15px 10px;
+    border: 1px solid #bbb;
+    border-radius: 10px;
+    max-width: 300px;
+    flex: 1 1 25%;
+    list-style: none;
+    overflow: hidden;
+    &:hover {
+      box-shadow: 0px 5px 10px 1px #777;
+      background: lighten($wican-orange, 40);
+      transform: scale(1.05);
+    }
+  }
+  a {
+    display: block;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    color: $wican-orange;
+  }
+  img {
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
+  span {
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 20px;
+  }
+}
