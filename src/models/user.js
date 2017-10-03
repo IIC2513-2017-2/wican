@@ -40,6 +40,9 @@ module.exports = function defineuser(sequelize, DataTypes) {
         len: [6],
       },
     },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+    },
   });
   user.beforeUpdate(buildPasswordHash);
   user.beforeCreate(buildPasswordHash);
