@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const sendWelcomeEmail = require('../mailers/welcome');
 
 const router = new KoaRouter();
 
@@ -14,6 +15,7 @@ router.post('usersCreate', '/', async (ctx) => {
   try {
     await user.save();
     ctx.flashMessage.notice = '¡Tu cuenta de usuario está lista para comenzar a usarla!';
+    sendWelcomeEmail(ctx, { user });
     ctx.redirect(ctx.router.url('sessionNew'));
   } catch (validationError) {
     await ctx.render('users/new', {
