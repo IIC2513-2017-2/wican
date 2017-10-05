@@ -13,7 +13,7 @@ router.get('usersNew', '/new', async ctx =>
 router.post('usersCreate', '/', async (ctx) => {
   const user = ctx.orm.user.build(ctx.request.body);
   try {
-    await user.save();
+    await user.save({ fields: ['firstName', 'lastName', 'email', 'password'] });
     ctx.flashMessage.notice = '¡Tu cuenta de usuario está lista para comenzar a usarla!';
     sendWelcomeEmail(ctx, { user });
     ctx.redirect(ctx.router.url('sessionNew'));
