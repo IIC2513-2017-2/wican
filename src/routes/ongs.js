@@ -13,6 +13,11 @@ router.get('ongs', '/', async (ctx) => {
 
 router.get('ong', '/:id', async (ctx) => {
   const ong = await ctx.orm.ong.findById(ctx.params.id);
+  ctx.assert(ong, 404, 'No encontré la ONG pedida', { id: ctx.params.id });
+  // above is the same as:
+  // if (!ong) {
+  //   ctx.throw(404, ...)
+  // }
   const initiatives = await ong.getInitiatives({ limit: 3, order: [['createdAt', 'DESC']] });
   await ctx.render('ongs/show', {
     ong,

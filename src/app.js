@@ -83,7 +83,39 @@ render(app, {
 
 mailer(app);
 
+// general handling for errors tha reach to this point
+app.use(async (ctx, next) => {
+  try {
+    // let middlewares handle the request, but catch possible errors thrown
+    await next();
+  } catch (error) {
+    // we'll only handle Not found HTTP errors in this case
+    if (error.name === 'NotFoundError') {
+      // and we'll use a custom template instead of default handling
+      await ctx.render('error', {
+        title: error.message,
+        details: `El recurso de id ${error.id} no fue encontrado`,
+      });
+      // if we'll handle the error we should emit the 'error' event so a handling of that
+      // (usually for logging purposes) can also know about this error
+      ctx.app.emit('error', error, ctx);
+    }
+    // if it's an error we are not handling we need to throw it so next handlers
+    // (or the default one) have the opportunity to handle it
+    throw error;
+  }
+});
+
 // Routing middleware
 app.use(routes.routes());
+
+// 'error' event will be emitted for every error. We cannot respond to the client from here since
+// this happens after the response has been generated
+app.on('error', (error, ctx) => {
+  const logEnabled = false;
+  if (logEnabled) {
+    console.error(error, ctx);
+  }
+});
 
 module.exports = app;
