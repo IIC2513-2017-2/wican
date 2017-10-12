@@ -1,5 +1,6 @@
 $wican-blue: #47737d;
 $wican-orange: #e87134;
+$default-transition: 0.3s all;
 
 html, body {
   margin: 0;
@@ -11,6 +12,10 @@ body {
   padding-top: 100px;
   margin-left: 20px;
   margin-right: 20px;
+  transition: $default-transition;
+  &.minimized-header {
+    padding-top: 50px;
+  }
 }
 
 header {
@@ -23,13 +28,22 @@ header {
   box-shadow: 0 0 5px #999;
   background: #fff;
   z-index: 10;
+  transition: $default-transition;
+  .minimized-header & {
+    padding: 5px 10px;
+  }
 }
+
 
 #logo {
   display: inline-block;
   vertical-align: middle;
   img {
     height: 60px;
+    transition: $default-transition;
+    .minimized-header & {
+      height: 30px;
+    }
   }
 }
 
@@ -43,11 +57,15 @@ nav {
     padding: 20px;
     color: $wican-blue;
     text-decoration: none;
+    transition: $default-transition;
     &:hover {
       background: lighten($wican-blue, 50);
     }
     &:last-child {
       border: none;
+    }
+    .minimized-header & {
+      padding: 0 20px;
     }
   }
 }
@@ -58,7 +76,14 @@ nav {
   right: 0;
   padding: 20px;
   text-align: right;
+  transition: $default-transition;
   span {
     display: block;
+  }
+  .minimized-header & {
+    padding: 10px 20px;
+    span {
+      display: inline-block;
+    }
   }
 }
