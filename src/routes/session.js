@@ -12,7 +12,7 @@ router.get('sessionNew', '/new', async ctx =>
 router.put('sessionCreate', '/', async (ctx) => {
   const { email, password } = ctx.request.body;
   const user = await ctx.orm.user.find({ where: { email } });
-  const isPasswordCorrect = await user.checkPassword(password);
+  const isPasswordCorrect = user && await user.checkPassword(password);
   if (isPasswordCorrect) {
     ctx.session.userId = user.id;
     return ctx.redirect(ctx.router.url('sessionNew'));

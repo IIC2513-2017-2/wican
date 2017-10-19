@@ -47,6 +47,10 @@ module.exports = function defineuser(sequelize, DataTypes) {
   user.beforeUpdate(buildPasswordHash);
   user.beforeCreate(buildPasswordHash);
 
+  user.prototype.getFullName = function getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  };
+
   user.prototype.checkPassword = function checkPassword(password) {
     return bcrypt.compare(password, this.password);
   };

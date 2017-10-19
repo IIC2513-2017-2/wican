@@ -2,6 +2,11 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+async function loadInitiative(ctx, next) {
+  ctx.state.initiative = await ctx.orm.initiative.findById(ctx.params.id);
+  return next();
+}
+
 router.get('ongInitiatives', '/', async (ctx) => {
   const { ong } = ctx.state;
   const initiatives = await ong.getInitiatives();
@@ -23,9 +28,8 @@ router.get('ongInitiativesNew', '/new', async (ctx) => {
   });
 });
 
-router.get('ongInitiativesEdit', '/:id/edit', async (ctx) => {
-  const { ong } = ctx.state;
-  const initiative = await ctx.orm.initiative.findById(ctx.params.id);
+router.get('ongInitiativesEdit', '/:id/edit', loadInitiative, async (ctx) => {
+  const { ong, initiative } = ctx.state;
   await ctx.render('initiatives/edit', {
     ong,
     initiative,
@@ -48,9 +52,8 @@ router.post('ongInitiativesCreate', '/', async (ctx) => {
   }
 });
 
-router.patch('ongInitiativesUpdate', '/:id', async (ctx) => {
-  const { ong } = ctx.state;
-  const initiative = await ctx.orm.initiative.findById(ctx.params.id);
+router.patch('ongInitiativesUpdate', '/:id', loadInitiative, async (ctx) => {
+  const { ong, initiative } = ctx.state;
   try {
     await initiative.update(ctx.request.body);
     ctx.redirect(ctx.router.url('ongInitiative', { ongId: initiative.ongId, id: initiative.id }));
@@ -64,14 +67,21 @@ router.patch('ongInitiativesUpdate', '/:id', async (ctx) => {
   }
 });
 
-router.get('ongInitiative', '/:id', async (ctx) => {
-  const { ong } = ctx.state;
-  const initiatives = await ong.getInitiatives({
-    where: { id: ctx.params.id },
-    limit: 1,
+router.put('ongInitiativeSign', '/:id/sign', loadInitiative, async (ctx) => {
+  const { initiative, ong } = ctx.state;
+  await initiative.sign(ctx.state.currentUser || ctx.request.body);
+  ctx.redirect(ctx.router.url('ongInitiative', ong.id, initiative.id));
+});
+
+router.get('ongInitiative', '/:id', loadInitiative, async (ctx) => {
+  const { ong, initiative } = ctx.state;
+  const initiativeSignsCount = await initiative.countSigns();
+  await ctx.render('initiatives/show', {
+    initiative,
+    initiativeSignsCount,
+    signPath: ctx.router.url('ongInitiativeSign', ong.id, initiative.id),
+    ong,
   });
-  const initiative = initiatives[0];
-  await ctx.render('initiatives/show', { initiative, ong });
 });
 
 module.exports = router;
