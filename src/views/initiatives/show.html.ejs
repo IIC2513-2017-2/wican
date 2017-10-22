@@ -1,29 +1,4 @@
 <h1><%= initiative.title %></h1>
 <p><%= initiative.description %></p>
-<div>
-  <h2>Firmas de apoyo</h2>
-  <% if (initiativeSignsCount) { %>
-    <p>Han apoyado esta iniciativa <%= initiativeSignsCount %> personas. ¡Apóyala tú también!</p>
-  <% } else { %>
-    <p>Nadie a apoyado esta iniciativa aún. ¡Puedes ser el primero!</p>
-  <% } %>
-  <div>
-    <form action="<%= signPath %>" method="post">
-      <input type="hidden" name="_method" value="put" />
-      <% if (currentUser) { %>
-        <p>Estás firmando como <strong><%= currentUser.getFullName() %></strong></p>
-      <% } else { %>
-        <div>Completa tus datos:</div>
-        <div>
-          <label for="name">nombre:</label>
-          <input type="text" name="name" id="name" />
-        </div>
-        <div>
-          <label for="email">e-mail</label>
-          <input type="text" name="email" id="email" />
-        </div>
-      <% } %>
-      <input type="submit" value="¡Firmar!" />
-    </form>
-  </div>
+<div id="signs-react-app">
 </div>

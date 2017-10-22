@@ -1,11 +1,6 @@
 import React from 'react';
-import Counter from './Counter';
+import InitiativeSigns from '../containers/InitiativeSigns';
 
 export default function App() {
-  return (
-    <div>
-      Hello React World! How are you?
-      <Counter />
-    </div>
-  );
+  return <InitiativeSigns />;
 }

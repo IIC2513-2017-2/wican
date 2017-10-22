@@ -70,18 +70,34 @@ router.patch('ongInitiativesUpdate', '/:id', loadInitiative, async (ctx) => {
 router.put('ongInitiativeSign', '/:id/sign', loadInitiative, async (ctx) => {
   const { initiative, ong } = ctx.state;
   await initiative.sign(ctx.state.currentUser || ctx.request.body);
-  ctx.redirect(ctx.router.url('ongInitiative', ong.id, initiative.id));
+  switch (ctx.accepts('html', 'json')) {
+    case 'html':
+      ctx.redirect(ctx.router.url('ongInitiative', ong.id, initiative.id));
+      break;
+    case 'json':
+      ctx.body = { initiative, signsCount: await initiative.countSigns() };
+      break;
+    default:
+  }
 });
 
 router.get('ongInitiative', '/:id', loadInitiative, async (ctx) => {
   const { ong, initiative } = ctx.state;
   const initiativeSignsCount = await initiative.countSigns();
-  await ctx.render('initiatives/show', {
-    initiative,
-    initiativeSignsCount,
-    signPath: ctx.router.url('ongInitiativeSign', ong.id, initiative.id),
-    ong,
-  });
+  switch (ctx.accepts('html', 'json')) {
+    case 'html':
+      await ctx.render('initiatives/show', {
+        initiative,
+        initiativeSignsCount,
+        signPath: ctx.router.url('ongInitiativeSign', ong.id, initiative.id),
+        ong,
+      });
+      break;
+    case 'json':
+      ctx.body = { initiative, signsCount: initiativeSignsCount };
+      break;
+    default:
+  }
 });
 
 module.exports = router;
