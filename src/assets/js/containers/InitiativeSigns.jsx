@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import InitiativeSignsComponent from '../components/InitiativeSigns';
+import initiativesService from '../services/initiatives';
 
 export default class InitiativeSigns extends Component {
   constructor(props) {
@@ -7,6 +9,7 @@ export default class InitiativeSigns extends Component {
     this.state = {
       signsCount: 0,
       loading: false,
+      error: undefined,
       showThanks: false,
     };
     this.onSubmit = this.onSubmit.bind(this);
@@ -16,25 +19,21 @@ export default class InitiativeSigns extends Component {
     this.fetchInitiative();
   }
 
-  async onSubmit() {
-    this.setState({ loading: true });
-    const response = await fetch(`${window.location.pathname}/sign`, {
-      method: 'put',
-      headers: { Accept: 'application/json' },
-    });
-    const json = await response.json();
-    this.setState({ signsCount: json.signsCount, loading: false, showThanks: true });
+  async onSubmit(data) {
+    this.setState({ loading: true, error: undefined, showThanks: false });
+    try {
+      const json =
+        await initiativesService.putSign(this.props.ongId, this.props.initiativeId, data);
+      this.setState({ signsCount: json.signsCount, loading: false, showThanks: true });
+    } catch (error) {
+      this.setState({ error: error.message, loading: false });
+    }
   }
 
-  fetchInitiative() {
+  async fetchInitiative() {
     this.setState({ loading: true });
-    fetch(window.location.pathname, {
-      headers: { Accept: 'application/json' },
-    })
-      .then(response => response.json())
-      .then((json) => {
-        this.setState({ signsCount: json.signsCount, loading: false });
-      });
+    const initiativeData = await initiativesService.get(this.props.ongId, this.props.initiativeId);
+    this.setState({ signsCount: initiativeData.signsCount, loading: false });
   }
 
   render() {
@@ -44,6 +43,7 @@ export default class InitiativeSigns extends Component {
     return (
       <div>
         {this.state.showThanks && <div className="notification">¡Gracias por tu apoyo!</div>}
+        {this.state.error && <div className="error">Error: {this.state.error}</div>}
         <InitiativeSignsComponent
           signsCount={this.state.signsCount}
           onSubmit={this.onSubmit}
@@ -52,3 +52,8 @@ export default class InitiativeSigns extends Component {
     );
   }
 }
+
+InitiativeSigns.propTypes = {
+  ongId: PropTypes.string.isRequired,
+  initiativeId: PropTypes.string.isRequired,
+};

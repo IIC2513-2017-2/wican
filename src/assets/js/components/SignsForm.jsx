@@ -6,18 +6,22 @@ export default class SignsForm extends Component {
     super(props);
     this.state = { name: '', email: '' };
     this.onInputChange = this.onInputChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onInputChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+  onSubmit() {
+    this.props.onSubmit(this.state);
+  }
+
   render() {
     return (
-      <form onSubmit={this.props.onSubmit}>
-        <input type="hidden" name="_method" value="put" />
+      <form onSubmit={this.onSubmit}>
         <p>Completa tus datos:</p>
-        <label htmlFor="name">
+        <label htmlFor="name" className="special-label">
           <span>nombre:</span>
           <input
             type="text"
