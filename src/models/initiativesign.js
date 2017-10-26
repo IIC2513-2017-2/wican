@@ -14,6 +14,14 @@ module.exports = function defineInitiativeSign(sequelize, DataTypes) {
         notEmpty: true,
       },
     },
+  }, {
+    validate: {
+      userOrUserData() {
+        if (!this.userId && (!this.name || !this.email)) {
+          throw new Error('You need to specify a user or name/email for the signee');
+        }
+      },
+    },
   });
 
   InitiativeSign.associate = function associate(models) {

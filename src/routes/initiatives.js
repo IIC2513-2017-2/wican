@@ -7,6 +7,25 @@ async function loadInitiative(ctx, next) {
   return next();
 }
 
+// JSON error handling
+router.use(async (ctx, next) => {
+  try {
+    await next();
+  } catch (error) {
+    if (error.status) {
+      switch (ctx.accepts('html', 'json')) {
+        case 'html':
+          throw error;
+        case 'json':
+          ctx.status = error.status;
+          ctx.body = error;
+          break;
+        default:
+      }
+    }
+  }
+});
+
 router.get('ongInitiatives', '/', async (ctx) => {
   const { ong } = ctx.state;
   const initiatives = await ong.getInitiatives();
@@ -69,7 +88,13 @@ router.patch('ongInitiativesUpdate', '/:id', loadInitiative, async (ctx) => {
 
 router.put('ongInitiativeSign', '/:id/sign', loadInitiative, async (ctx) => {
   const { initiative, ong } = ctx.state;
-  await initiative.sign(ctx.state.currentUser || ctx.request.body);
+  try {
+    await initiative.sign(ctx.state.currentUser || ctx.request.body);
+  } catch (error) {
+    if (error instanceof ctx.orm.sequelize.ValidationError) {
+      throw ctx.throw(400, error);
+    }
+  }
   switch (ctx.accepts('html', 'json')) {
     case 'html':
       ctx.redirect(ctx.router.url('ongInitiative', ong.id, initiative.id));

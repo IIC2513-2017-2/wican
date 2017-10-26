@@ -17,14 +17,6 @@ module.exports = function defineinitiative(sequelize, DataTypes) {
     image: DataTypes.STRING,
     active: DataTypes.BOOLEAN,
     hashtag: DataTypes.STRING,
-  }, {
-    validate: {
-      userOrUserData() {
-        if (!this.userId && (!this.name || !this.email)) {
-          throw new Error('You need to specify a user or name/email for the signee');
-        }
-      },
-    },
   });
 
   initiative.associate = function associate(models) {
