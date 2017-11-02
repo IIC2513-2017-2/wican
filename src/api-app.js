@@ -1,8 +1,9 @@
+const jsonApiSerializer = require('jsonapi-serializer');
 const Koa = require('koa');
 const koaBody = require('koa-body');
 const koaLogger = require('koa-logger');
 const mailer = require('./mailers');
-const routes = require('./routes/api');
+const routes = require('./api-routes');
 const orm = require('./models');
 
 // App constructor
@@ -10,6 +11,10 @@ const app = new Koa();
 
 // expose ORM through context's prototype
 app.context.orm = orm;
+
+app.context.jsonSerializer = function jsonSerializer(type, options) {
+  return new jsonApiSerializer.Serializer(type, options);
+};
 
 /**
  * Middlewares
