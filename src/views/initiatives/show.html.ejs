@@ -6,3 +6,13 @@
   data-initiative-id="<%= initiative.id %>"
 >
 </div>
+<% if (news && news.length) { %>
+  <div class="related-news">
+    <h2>Noticias relacionadas (powered by The Guardian)</h2>
+    <ul>
+      <% news.forEach((article) => { %>
+        <li><a href="<%= article.webUrl %>"><%= article.webTitle %></a></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>

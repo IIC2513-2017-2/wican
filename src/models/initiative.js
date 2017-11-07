@@ -15,6 +15,7 @@ module.exports = function defineinitiative(sequelize, DataTypes) {
       },
     },
     image: DataTypes.STRING,
+    keywords: DataTypes.STRING,
     active: DataTypes.BOOLEAN,
     hashtag: DataTypes.STRING,
   });

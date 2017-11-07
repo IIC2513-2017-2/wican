@@ -1,5 +1,5 @@
 const KoaRouter = require('koa-router');
-
+const newsModel = require('../remote-models/news');
 const router = new KoaRouter();
 
 async function loadInitiative(ctx, next) {
@@ -116,6 +116,7 @@ router.get('ongInitiative', '/:id', loadInitiative, async (ctx) => {
         initiativeSignsCount,
         signPath: ctx.router.url('ongInitiativeSign', ong.id, initiative.id),
         ong,
+        news: initiative.keywords ? await newsModel.getLatestOn(initiative.hashtag) : [],
       });
       break;
     case 'json':
