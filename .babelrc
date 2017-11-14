@@ -17,5 +17,10 @@
     "react-hot-loader/babel",
     "transform-object-rest-spread",
     "transform-runtime"
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    }
+  }
 }

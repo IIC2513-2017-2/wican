@@ -11,18 +11,23 @@
     "lint-fix": "eslint --fix ./src index.js",
     "build-assets": "yarn run clean-assets && NODE_ENV=production webpack -p",
     "clean-assets": "rm -f build/assets/*",
-    "heroku-postbuild": "yarn run build-assets && sequelize db:migrate"
+    "heroku-postbuild": "yarn run build-assets && sequelize db:migrate",
+    "test": "jest"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "eslint": "^4.3.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^11.3.1",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0",
+    "jest": "^21.2.1",
     "koa-webpack": "^1.0.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "sequelize-test-setup": "^0.0.4",
+    "supertest": "^3.0.0"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
@@ -71,5 +76,12 @@
   "engines": {
     "node": "^8.5.0",
     "yarn": "^1.0.2"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "notify": true,
+    "testEnvironment": "node",
+    "verbose": true,
+    "setupTestFrameworkScriptFile": "./setupTests.js"
   }
 }
